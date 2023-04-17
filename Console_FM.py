@@ -58,11 +58,12 @@ while(12 != choice):
     if(9 == choice):
         check_sys_path("../Lesson3")
         import  victory
+        victory.run_victory()
         continue
     if(10 == choice):
         check_sys_path("../Lesson4")
-        import myfunctions      #- works!
-        import use_functions    # No module named 'use_functions'
+        import use_functions   
+        use_functions.run_bank()
         continue 
 
     match choice:
