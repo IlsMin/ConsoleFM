@@ -1,5 +1,6 @@
 import sys
 import os
+import json
 import platform
 import shutil
 
@@ -14,28 +15,39 @@ menu_points = {  1 : "создать папку",
                  9 : "играть в викторину",
                 10 : "мой банковский счет",
                 11 : "смена рабочей директории",
-                12 : "выход"
+                12 : "сохранить содержимое рабочей директории в файл",
+                13 : "выход"
                }
 
 def getDirName(prompt):
     path = input(prompt+ "? : ")
     return (os.path.exists(path), path)
 
-def show_file_or_dir(only_dir):
+def get_file_or_dir(only_dir):
     files = os.listdir(os.getcwd())
     rez = []
     for file in files:
         print (file, os.path.isfile(os.path.join(os.getcwd(), file)))
         if (os.path.isfile(os.path.join(os.getcwd(), file)) != only_dir):
            rez.append(file)
-    print( rez)
+    return rez
+
+def show_file_or_dir(only_dir):
+    print( get_file_or_dir(only_dir))
 
 def check_sys_path(path):
     fullpath = os.path.join( os.getcwd(), path)
     if( fullpath not in sys.path):
         sys.path.append(fullpath)
     #print (sys.path)
-                
+
+def write_to_file():
+    data = {'files': f'{ get_file_or_dir(True) }',
+            'dirs' : f'{ get_file_or_dir(False)}'
+            };
+    with open('listdir.txt', "w") as f:
+        json.dump(data,f)
+
 
 if sys.version_info.major < 3 or sys.version_info.minor < 10:
     print ("Внимание! Этот код исплользует оператор match и,\nследовательно, требует версию Питона не ниже 3.10")
@@ -44,7 +56,7 @@ if sys.version_info.major < 3 or sys.version_info.minor < 10:
 # этот код не содержит блоков try !!!
 def run_coonsole():
     choice =0
-    while(12 != choice):
+    while(13 != choice):
         print('---')
         for (num, text) in menu_points.items(): 
             print(f'{num}\t: {text}')
@@ -103,6 +115,7 @@ def run_coonsole():
             case 6: show_file_or_dir(False); 
             case 7: print ( sys.platform,  sys.version) #, sys.version_info)
             case 8: print ("Ильсур Мингараев (при содействии УИИ)")
+            case 12: write_to_file()
 
             case _: print ("  Не существующий пункт меню")
 
