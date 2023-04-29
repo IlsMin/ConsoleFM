@@ -27,7 +27,7 @@ def get_file_or_dir(only_dir):
     files = os.listdir(os.getcwd())
     rez = []
     for file in files:
-        print (file, os.path.isfile(os.path.join(os.getcwd(), file)))
+     #   print (file, os.path.isfile(os.path.join(os.getcwd(), file)))
         if (os.path.isfile(os.path.join(os.getcwd(), file)) != only_dir):
            rez.append(file)
     return rez
