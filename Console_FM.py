@@ -31,6 +31,7 @@ def getDirName(prompt):
     path = input(prompt+ "? : ")
     return (os.path.exists(path), path)
 
+@rezultPrinting
 def get_file_or_dir(only_dir)
     files = os.listdir(os.getcwd())
     rez = []
@@ -41,8 +42,11 @@ def get_file_or_dir(only_dir)
 
     return rez
 
+
 def show_file_or_dir(only_dir):
     print( get_file_or_dir(only_dir))
+
+    
 
 def check_sys_path(path):
     fullpath = os.path.join( os.getcwd(), path)
@@ -132,8 +136,12 @@ def run_console():
                 else:   shutil.copy(path, dest)
                     
             case 4: print(os.listdir())
-            case 5: show_file_or_dir(True); #print(rezultPrinting(show_file_or_dir(True)))
-            case 6: show_file_or_dir(False)
+            # case 5: show_file_or_dir(True); #print(rezultPrinting(show_file_or_dir(True)))
+            # case 6: show_file_or_dir(False)
+            case 5: get_file_or_dir(True); 
+            case 6: get_file_or_dir(False)
+
+
             case 7: print ( sys.platform,  sys.version) #, sys.version_info)
             case 8: print ("Ильсур Мингараев (при содействии УИИ)")
             case 12: write_to_file()
