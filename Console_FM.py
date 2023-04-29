@@ -32,7 +32,7 @@ def getDirName(prompt):
     return (os.path.exists(path), path)
 
 @rezultPrinting
-def get_file_or_dir(only_dir)
+def get_file_or_dir(only_dir):
     files = os.listdir(os.getcwd())
     rez = []
     for file in files:
