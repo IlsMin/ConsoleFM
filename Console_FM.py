@@ -17,10 +17,19 @@ menu_points = {  1 : "создать папку",
                 12 : "выход"
                }
 
+def rezultPrinting(f):
+    def inner(*args, **kwargs):
+         result = f(*args, **kwargs)
+         print (result)
+    
+    return inner     
+   
+
 def getDirName(prompt):
     path = input(prompt+ "? : ")
     return (os.path.exists(path), path)
 
+@rezultPrinting   
 def show_file_or_dir(only_dir):
     files = os.listdir(os.getcwd())
     rez = []
@@ -28,7 +37,7 @@ def show_file_or_dir(only_dir):
         print (file, os.path.isfile(os.path.join(os.getcwd(), file)))
         if (os.path.isfile(os.path.join(os.getcwd(), file)) != only_dir):
            rez.append(file)
-    print( rez)
+    return(rez)
 
 def check_sys_path(path):
     fullpath = os.path.join( os.getcwd(), path)
@@ -41,16 +50,26 @@ if sys.version_info.major < 3 or sys.version_info.minor < 10:
     print ("Внимание! Этот код исплользует оператор match и,\nследовательно, требует версию Питона не ниже 3.10")
     exit
 
-# этот код не содержит блоков try !!!
-def run_coonsole():
+# 
+def run_console():
     choice =0
     while(12 != choice):
         print('---')
         for (num, text) in menu_points.items(): 
             print(f'{num}\t: {text}')
         print('---')
-        choice = int(input("Введите номер пункта меню: "))
-        print (f"выбран пункт '{menu_points[choice]}'")
+        try:
+            choice = int(input("Введите номер пункта меню: "))
+            if choice < 1 or choice >len(menu_points):
+               raise ValueError(' Не существующий пункт меню')             
+
+        except ValueError as er:
+            print(er) 
+            # print('Введите номер пункта меню')
+            continue;
+        else:
+            print (f"выбран пункт '{menu_points[choice]}'")
+        
 
         if(9 == choice):
             check_sys_path("../Lesson3")
@@ -72,9 +91,11 @@ def run_coonsole():
                 
             case 11:
                 exists, path = getDirName("Имя директории")
-                if(exists):
-                    os.chdi(path)
-                else: print(" такой каталог не существует")
+
+                # if(exists):
+                #     os.chdir(path)
+                # else: 
+                (os.chdir(path) if exists else print(" такой каталог не существует"))
 
             case 2:
                 exists, path = getDirName("Имя удаляемой папки/файла")
@@ -99,12 +120,12 @@ def run_coonsole():
                 else:   shutil.copy(path, dest)
                     
             case 4: print(os.listdir())
-            case 5: show_file_or_dir(True);
-            case 6: show_file_or_dir(False); 
+            case 5: show_file_or_dir(True); #print(rezultPrinting(show_file_or_dir(True)))
+            case 6: show_file_or_dir(False)
             case 7: print ( sys.platform,  sys.version) #, sys.version_info)
             case 8: print ("Ильсур Мингараев (при содействии УИИ)")
 
             case _: print ("  Не существующий пункт меню")
 
 if __name__ == "__main__":
-    run_coonsole()
+    run_console()
